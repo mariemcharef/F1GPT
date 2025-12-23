@@ -6,12 +6,23 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "seed": "ts-node ./scripts/loadDb.ts",
     "lint": "eslint"
   },
   "dependencies": {
-    "next": "16.1.0",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "@anthropic-ai/sdk": "^0.71.2",
+    "@datastax/astra-db-ts": "^1.5.0",
+    "@langchain/community": "^0.3.0",
+    "@langchain/core": "^0.3.80",
+    "ai": "^3.3.0",
+    "dotenv": "^16.6.1",
+    "langchain": "^0.3.0",
+    "next": "^15.0.0",
+    "openai": "^4.62.1",
+    "puppeteer": "^24.34.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/node": "^20",
