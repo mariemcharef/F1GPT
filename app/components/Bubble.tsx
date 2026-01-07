@@ -1,10 +1,16 @@
-const Bubble = ({message})=>{
-    const {content, role} = message
-    return(
-        <div className='bubble'>
+import { Message } from "ai";
 
-        </div>
-    )
+interface BubbleProps {
+    message: Message;
 }
 
-export default Bubble
+const Bubble = ({ message }: BubbleProps) => {
+    const { content, role } = message;
+    return (
+        <div className={`${role} bubble`}>
+            {content}
+        </div>
+    );
+};
+
+export default Bubble;

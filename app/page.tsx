@@ -1,8 +1,11 @@
-"use client"
+"use client";
 
-import { useChat } from "ai/react"
-import { Message } from "ai"
-import PromptSuggestionsRow from "./components/PromptSuggestionsRow"
+import { useChat } from "ai/react";
+import { Message } from "ai";
+import { FormEvent } from "react";
+import PromptSuggestionsRow from "./components/PromptSuggestionsRow";
+import Bubble from "./components/Bubble";
+import LoadingBubble from "./components/LoadingBubble";
 
 export default function Home() {
   const {
@@ -11,49 +14,59 @@ export default function Home() {
     handleInputChange,
     handleSubmit,
     isLoading,
-    setInput
-  } = useChat()
+    setInput,
+  } = useChat({
+    api: "/api/chat",
+  });
 
-  const noMessages = messages.length === 0
+  const noMessages = messages.length === 0;
 
   const onPromptClick = (prompt: string) => {
-    setInput(prompt)
-  }
+    setInput(prompt);
+  };
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (input.trim()) {
+      handleSubmit(e);
+    }
+  };
 
   return (
     <main>
-      {/* <Image src={f1GPTLogo} width="250" alt="F1GPT Logo" /> */}
       <section>
         {noMessages ? (
           <>
             <p className="starter-text">
-              The Ultimate place for Formula One super fans!
-              Ask F1GPT anything about the fantastic topic of F1 racing
+              The Ultimate place for Formula One super fans! Ask F1GPT anything
+              about the fantastic topic of F1 racing
             </p>
             <br />
-            <PromptSuggestionsRow onPromptClick={onPromptClick}/> 
+            <PromptSuggestionsRow onPromptClick={onPromptClick} />
           </>
         ) : (
           <>
             {messages.map((message: Message) => (
-              <div key={message.id}>
-                <strong>{message.role}:</strong> {message.content}
-              </div>
+              <Bubble key={message.id} message={message} />
             ))}
-            {isLoading && <div>Loading...</div>}
+            {isLoading && <LoadingBubble />}
           </>
-        )
-        }
-        <form onSubmit={handleSubmit}>
-          <input 
-            className="question-box" 
-            onChange={handleInputChange} 
-            value={input} 
-            placeholder="Ask me something"
+        )}
+        <form onSubmit={handleFormSubmit}>
+          <input
+            className="question-box"
+            onChange={handleInputChange}
+            value={input}
+            placeholder="Ask me something about F1..."
+            disabled={isLoading}
           />
-          <input type="submit" value="Send" />
+          <input 
+            type="submit" 
+            value={isLoading ? "Sending..." : "Send"}
+            disabled={isLoading || !input.trim()}
+          />
         </form>
       </section>
     </main>
-  )
+  );
 }
