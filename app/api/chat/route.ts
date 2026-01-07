@@ -127,11 +127,9 @@ export async function POST(req: Request) {
                 
                 const text = data.choices?.[0]?.message?.content || "I apologize, but I'm having trouble generating a response right now.";
 
-                // Format response in the correct streaming format for ai/react
                 const encodedText = text.replace(/"/g, '\\"').replace(/\n/g, '\\n');
                 const stream = new ReadableStream({
                     start(controller) {
-                        // Send text content in the format expected by ai/react
                         controller.enqueue(`0:"${encodedText}"\n`);
                         controller.close();
                     }
